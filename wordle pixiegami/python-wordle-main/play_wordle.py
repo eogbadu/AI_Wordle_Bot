@@ -11,8 +11,12 @@ def main():
     secret = random.choice(list(word_set))
     wordle = Wordle(secret)
 
+    
+
     while wordle.can_attempt:
         x = input("\nType your guess: ")
+        print(x)
+        x = x.upper()
 
         if len(x) != wordle.WORD_LENGTH:
             print(
@@ -25,7 +29,7 @@ def main():
         if not x in word_set:
             print(
                 Fore.RED
-                + f"{x} is not a valid word!"
+                + f"{x} is not a valid word! this word is not in the word set"
                 + Fore.RESET
             )
             continue

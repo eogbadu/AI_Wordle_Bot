@@ -2,6 +2,13 @@
 This project is for the CMSC671 fall class at UMBC.
 This is comprised of code from the pixegami author found on youtube and github (citations below).
 
+# to play the game load download the wordle pixiegami directory into a file system.
+launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file and run the lines of code down to the main loop.
+there is a markdown line that says: The next line runs the game.
+The game is interactive currently for a human player using the python input feature in the notebook.
+The game is also interactive by an agent through a file implementation where the egent can write guesses to a file.  
+The main loop reads the guesses and provides visual feedback.  Data feedback features are under development.  
+
 The code has been modified and scripts added to provide an interface for an agent to play the game.
 This is done by writing guesses to the agent_guesses file.  The main loop is run from the "pixigame_modified_play_wordle_with_agent_loop.ipynb" script.  
 

@@ -1,12 +1,12 @@
 #
 This project is for the CMSC671 fall class at UMBC.
-This is comprised of code from the pixegami author found on youtube and github (citations below).
+This is comprised of code from the pixegami author found on YouTube and GitHub (citations below).
 
 # to play the game load download the wordle pixiegami directory into a file system.
 launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file and run the lines of code down to the main loop.
 there is a markdown line that says: The next line runs the game.
 The game is interactive currently for a human player using the python input feature in the notebook.
-The game is also interactive by an agent through a file implementation where the egent can write guesses to a file.  
+The game is also interactive by an agent through a file implementation where the agent can write guesses to a file.  
 The main loop reads the guesses and provides visual feedback.  Data feedback features are under development.  
 
 The code has been modified and scripts added to provide an interface for an agent to play the game.
@@ -15,14 +15,14 @@ This is done by writing guesses to the agent_guesses file.  The main loop is run
 ## This code is the one you will use to run the program.
 ## It imports from the other python programs.
 
-there is a data directory where the data files are stored.  
+There is a data directory where the data files are stored.  
 These files are code written by this team which includes code from the play_wordle.py file that was written by the original author.
 
 ## Agent_guess_writer.ipynb
     This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
     
 ## create_5_letter_word_text.ipynb
-    This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writingthese to a file in the data directory.
+    This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
     
 ## pixigame_modified_play_wordle_with_agent_loop.ipynb 
     This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
@@ -46,7 +46,7 @@ These files are code written by this team which includes code from the play_word
 # Data directory
 
 ## convert_words.py  
-This is an  script from the original author that creates the word list
+This is a script from the original author that creates the word list
 ## word_source.txt  
 This is the author's word list
 
@@ -56,23 +56,23 @@ This is a file that provides the agent input to the game.
 ## wordle_words.txt
 This is a file of the words used in this script
 
-
 # Citations
-This work was significanly informed by code from this youtube site and corresponding github repository.  
+This work was significantly informed by code from this YouTube site and corresponding GitHub repository.  
 
-Created on Sat Nov  5 13:25:36 2022
-@author: johnny
-This code was heavily influenced by a design published in youtube under 
+Created on Sat Nov 5 13:25:36 2022
+@Author: johnny
+This code was heavily influenced by a design published in YouTube under 
 this url: https://www.youtube.com/watch?v=SyWeex-S6d0
 
-Youtube citation:
+YouTube citation:
 pixegami. (2022b, February 6). Build Wordle in Python • Word Game Python Project for Beginners. 
 YouTube. https://www.youtube.com/watch?v=SyWeex-S6d0
 
-github citation:
+GitHub citation:
 PIXEGAMI. (n.d.). GitHub - pixegami/python-wordle: 
 An implementation of Wordle in Python than can be played via the terminal. 
 GitHub. https://github.com/pixegami/python-wordle
+
 
 
 

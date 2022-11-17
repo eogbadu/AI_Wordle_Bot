@@ -1,3 +1,77 @@
+#
+This project is for the CMSC671 fall class at UMBC.
+This is comprised of code from the pixegami author found on youtube and github (citations below).
+
+The code has been modified and scripts added to provide an interface for an agent to play the game.
+This is done by writing guesses to the agent_guesses file.  The main loop is run from the "pixigame_modified_play_wordle_with_agent_loop.ipynb" script.  
+
+## This code is the one you will use to run the program.
+## It imports from the other python programs.
+
+there is a data directory where the data files are stored.  
+These files are code written by this team which includes code from the play_wordle.py file that was written by the original author.
+
+## Agent_guess_writer.ipynb
+    This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
+    
+## create_5_letter_word_text.ipynb
+    This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writingthese to a file in the data directory.
+    
+## pixigame_modified_play_wordle_with_agent_loop.ipynb 
+    This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
+
+# These files are original from the pixegami author
+
+## convert_words.py
+
+## letter_state.py
+
+## play_wordle.py
+    This file has been modified to provide some specific alterations required in our agent implementation
+
+## README.md
+
+## word_source.txt
+
+## wordle.py
+
+
+# Data directory
+
+## convert_words.py  
+This is an  script from the original author that creates the word list
+## word_source.txt  
+This is the author's word list
+
+# These files are written as part of this project
+## agent_guesses.txt  
+This is a file that provides the agent input to the game.   
+## wordle_words.txt
+This is a file of the words used in this script
+
+
+# Citations
+This work was significanly informed by code from this youtube site and corresponding github repository.  
+
+Created on Sat Nov  5 13:25:36 2022
+@author: johnny
+This code was heavily influenced by a design published in youtube under 
+this url: https://www.youtube.com/watch?v=SyWeex-S6d0
+
+Youtube citation:
+pixegami. (2022b, February 6). Build Wordle in Python • Word Game Python Project for Beginners. 
+YouTube. https://www.youtube.com/watch?v=SyWeex-S6d0
+
+github citation:
+PIXEGAMI. (n.d.). GitHub - pixegami/python-wordle: 
+An implementation of Wordle in Python than can be played via the terminal. 
+GitHub. https://github.com/pixegami/python-wordle
+
+
+
+
+# Below is the original readme from the pixegami author
+----------------------------------------------------------------------------------------------------------
 # python-wordle
 An implementation of Wordle in Python than can be played via the terminal.
 

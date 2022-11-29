@@ -14,6 +14,8 @@ import re
 from collections import namedtuple
 import pandas as pd
 
+import pickle
+
 alphabet = string.ascii_uppercase
 
 def load_word_set(path: str):
@@ -102,7 +104,13 @@ my_guess = "STINT"  # this is my guess word for the feedback function
 
 #@cache
 copy_wordlist = np_word_list.copy()
-def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,my_return_complex=False):
+file_path = "data/dummy_file.txt"
+
+myresults = namedtuple("myresults",["green_result","yellow_result","grey_list","not_green_list",
+                                    "regexstring_out","mylength","myregexresult","my_alphabet_df","zipped_lists","filecontent"])
+
+def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,my_return_complex=False,
+             my_file_path = file_path, my_write = False,  mywrite_init = False):
     guess = guess.upper()
     if printing == True: 
         print("Top of the feedback function\n")
@@ -110,6 +118,9 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
         print("guess",guess)
         print("np_word_list Hi Johnny",np_word_list)
         print("wordle.attempts",wordle.attempts ) 
+        print("my_file_path",my_file_path)
+        print("my_write",my_write)
+        print("mywrite_init",mywrite_init)
     #secret = wordle.secret
             
     # this makes green results
@@ -176,6 +187,7 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
 
     finalregexstring = ""
     for i in myregexstring:
+        if printing == True: print("for i in myregexstring: i",i)
         if type(i) == list:
             list_string = "".join(i)
             f_list_string = "[^{}]".format(list_string)
@@ -193,16 +205,43 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
     ### This provides a way to pass in a reduced data set
     #np_word_list = np.array(list(word_set))
     
-    if printing == True: print("196 np_word_list",np_word_list,"type np_word_list",type(np_word_list))
+    if printing == True: print("np_word_list",np_word_list,"type np_word_list",type(np_word_list))
     myregexresult = np_word_list[(list(map(lambda x: bool(re.match(regexstring_out,x)),np_word_list)))]
-    if printing == True: print("198 myregexresult", myregexresult)
+    if printing == True: print("myregexresult", myregexresult)
     mylength = len(myregexresult)
     if printing == True: print(mylength)
     #return(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult)
 
-
-    myresults = namedtuple("myresults",["green_result","yellow_result","grey_list","not_green_list","regexstring_out","mylength","myregexresult"])
-    results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult)
+    # This section works the alphabet frequency result set
+    # my_alphabet_df is a dataframe of the alphabet frequency of the word list by character position
+    my_alphabet_df = alphabet_frequency(myregexresult)
+    # my_vocab_value_results is a named tuple from the vocab value function returning a sorted list of words with the highest letter value first
+    my_vocab_value_results = vocab_value(myregexresult,my_alphabet_df)
+    # the zipped list is a sorted list in a dictionary format of the words in letter value order
+    zipped_lists = my_vocab_value_results.zipped_lists
+    if printing == True: print("zipped_lists",list(zipped_lists.items())[:10])
+    
+    # this secti0on establishes the named tuple content for the return results
+    
+    # myresults = namedtuple("myresults",["green_result","yellow_result","grey_list","not_green_list","regexstring_out","mylength","myregexresult","filecontent"])
+    # this named tupple was moved outside the function because it has to be outside to use it in the pickle function otherwise the pickle breaks
+    filecontent =  ""
+    results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent)
+    
+    # file processing for feedback file
+    
+    if printing == True: print(results)
+    
+    # This section writes the data to the my_file_path file
+    if my_write == True:
+        if mywrite_init == True:
+            filecontent = write_guessing_agent_feedback_file(my_file_path,results,initialize =True)
+        else:
+            filecontent = write_guessing_agent_feedback_file(my_file_path,results,initialize =False)
+        
+        #results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,filecontent)
+        results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent)
+    
     if my_return_complex == True:
         return(results)
     else:
@@ -287,9 +326,75 @@ def vocab_value(np_word_list,inputdf=mydf,printing=False):
     sorted_myIV_value_array = myIV_value_array[sorter]
     sorted_np_word_list = np_word_list[sorter]
 #    return(sorted_myIV_value_array,sorted_np_word_list)
+    zipped_lists = dict(zip(sorted_np_word_list,sorted_myIV_value_array))
 
-    myresults = namedtuple("myresults",["myIV_value_array","sorter","sorted_myIV_value_array","sorted_np_word_list"])
-    results = myresults(myIV_value_array,sorter,sorted_myIV_value_array,sorted_np_word_list)
+    myresults = namedtuple("myresults",["myIV_value_array","sorter","sorted_myIV_value_array","sorted_np_word_list","zipped_lists"])
+    results = myresults(myIV_value_array,sorter,sorted_myIV_value_array,sorted_np_word_list,zipped_lists)
     return(results)
 
+def write_guessing_agent_feedback_file(File_path,my_object,initialize =False):
+    if initialize == True:
+        f = open(File_path , "wb")
+        pickle.dump(my_object, f)
+        f.close()
+    else:
+        f = open(File_path , "ab")
+        pickle.dump(my_object, f)
+        f.close()
+    my_data = read_guessing_agent_feedback_file(File_path)
+    return(my_data)
+    
+    
 
+
+def read_guessing_agent_feedback_file(File_path):
+    my_data = []
+    with open(File_path, "rb")as f:
+        try:
+            while True:
+                my_data.append(pickle.load(f))
+        except EOFError:
+            pass
+    return(my_data)
+
+
+output_word_list = []
+file_name = ""
+
+def vocab_length(my_word_list = output_word_list,save_to_file = False, my_filename = file_name,printing = False):
+    my_df = pd.DataFrame()
+    if printing == True : 
+        print(my_word_list)
+        print(type(my_word_list))
+        print()
+    
+    for i in range(len(my_word_list)):
+        my_secret = my_word_list[i]
+        if printing == True : print(my_secret)
+        #mylengtharray = np_vocab_reduction(wordlist, my_secret,copy_wordlist, True,False)
+
+        # This is breaking. This is supposed to provide an array of all of the guesses against the secret word.  
+        # but the np.vectorize is bringing in the np_word list as the guess as a single element array
+        # rather than the full list
+        #mylengtharray = np_vocab_reduction(output_word_list,secret = my_secret,np_word_list=output_word_list,printing=True)
+        mylengthlist = []
+        for my_guess in my_word_list:
+
+            my_result = feedback(my_guess,secret = my_secret,np_word_list=my_word_list,printing=False,my_return_complex=False)
+            #if printing == True : print(my_result)
+            mylengthlist.append(my_result)
+        if printing == True : print(mylengthlist)
+        
+        dfline = pd.DataFrame([mylengthlist],index=[my_secret],columns=my_word_list)
+        if printing == True: print(dfline)
+        my_df = pd.concat([my_df,dfline])
+        if printing == True : print(my_df)
+        if printing == True :  print("len mylengthlist",len(mylengthlist),"dfline",dfline)
+        if save_to_file == True:
+            if i == 0:
+                dfline.to_csv(file_name, mode='w')
+            else:
+                dfline.to_csv(file_name, mode='a',header=False)
+            
+    return(my_df)
+    

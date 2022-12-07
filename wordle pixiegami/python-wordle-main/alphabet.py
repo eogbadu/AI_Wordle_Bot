@@ -13,7 +13,8 @@ from wordle import Wordle
 import re
 from collections import namedtuple
 import pandas as pd
-
+#from collections import Counter
+import time
 import pickle
 
 alphabet = string.ascii_uppercase
@@ -42,6 +43,8 @@ print(secret)  # this shows us the secret word
 
 my_secret = wordle.secret  # this is the actual secret word from the wordle game instance that is running
 my_guess = "STINT"  # this is my guess word for the feedback function
+my_color_code_list = [] # this is a pass through color code list that provides a game history of color codes.  This is appended in the loop and is used to chain the decision tree game loops together
+my_guess_list = [] # this is a pass through list of guesses.  This is appended in teh loop and returned in the complex results.
 
 # this function needs to be provided a guess that is 5 letters 
 # and a word set that is a numpy array list of 5 letter words. 
@@ -107,11 +110,18 @@ copy_wordlist = np_word_list.copy()
 file_path = "data/dummy_file.txt"
 
 myresults = namedtuple("myresults",["green_result","yellow_result","grey_list","not_green_list",
-                                    "regexstring_out","mylength","myregexresult","my_alphabet_df","zipped_lists","filecontent"])
+                                    "regexstring_out","mylength","myregexresult","my_alphabet_df","zipped_lists","filecontent","my_color_code","guess","secret","my_color_code_list","my_guess_list"])
 
 def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,my_return_complex=False,
-             my_file_path = file_path, my_write = False,  mywrite_init = False):
+             my_file_path = file_path, my_write = False,  mywrite_init = False,my_color_code_list = my_color_code_list,my_guess_list = my_guess_list):
     guess = guess.upper()
+    print("my_guess_list",my_guess_list)
+    my_guess_list = list(my_guess_list)
+    my_guess_list.append(guess) 
+    
+    print("guess",guess,"my_guess_list",my_guess_list,type(my_guess_list))
+
+    secret = secret.upper()
     if printing == True: 
         print("Top of the feedback function\n")
         print("secret",secret)
@@ -121,6 +131,7 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
         print("my_file_path",my_file_path)
         print("my_write",my_write)
         print("mywrite_init",mywrite_init)
+        print("my_color_code_list",my_color_code_list)
     #secret = wordle.secret
             
     # this makes green results
@@ -144,16 +155,45 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
     myisinstring = ""
     #myisinfstring = '(?=.*{}.*)'
 
-    for i in range(len(maskedword)):
-        isin = (guess[i] in maskedword)
-        if isin:
-            if printing == True: print(i,isin,guess,guess[i], myregexstring[i],type(myregexstring[i]))
-            #myregexstring[i].append(guess[i])
-            myregexstring[i] += guess[i]
-            myisinstring += f'(?=.*{guess[i]}.*)'
+    #for i in range(len(maskedword)):
 
-        yellow_result += str(int(isin))
+    count = {}
+    for i in range(len(secret)):
+      count[guess[i]] = secret.count(guess[i])  
+      
+    for i in range(len(secret)):
+        isin = (guess[i] in maskedword)
+        #if isin:
+        if guess[i] in maskedword:
+            
+            
+            if printing == True: print("150",i,isin,guess,guess[i], myregexstring[i],type(myregexstring[i]))
+            #myregexstring[i].append(guess[i])
+            if guess[i] not in myregexstring[i]:
+                myregexstring[i] += guess[i]
+            if printing == True: print("153",i,isin,guess,guess[i], myregexstring[i],type(myregexstring[i]))
+            myisinstring += f'(?=.*{guess[i]}.*)'
+        # this is where the yellow result is built
+        if isin and count[guess[i]] > 0:
+            yellow_result += "1"
+            count[guess[i]] -= 1
+        else:
+            yellow_result += "0"
+        
     if printing == True: print("yellow_result",yellow_result)
+
+
+    my_color_code = ""
+    for i in range(len(green_result)):
+        my_y = int(yellow_result[i])
+        my_g = int(green_result[i])
+        my_calc = my_y + my_g * 2
+        if my_calc == 3: my_calc = 2
+        my_code = str(my_calc)
+        my_color_code += my_code
+    if printing == True: print("my_color_code",my_color_code)
+    
+    my_color_code_list.append(my_color_code)
 
     # greylist is a list of letters that are not green and are not yellow
     # the idea is that the letter has not been filtered out
@@ -226,7 +266,7 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
     # myresults = namedtuple("myresults",["green_result","yellow_result","grey_list","not_green_list","regexstring_out","mylength","myregexresult","filecontent"])
     # this named tupple was moved outside the function because it has to be outside to use it in the pickle function otherwise the pickle breaks
     filecontent =  ""
-    results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent)
+    results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent,my_color_code,guess,secret,my_color_code_list,my_guess_list)
     
     # file processing for feedback file
     
@@ -240,7 +280,7 @@ def feedback(guess ,secret=my_secret, np_word_list=copy_wordlist,printing=False,
             filecontent = write_guessing_agent_feedback_file(my_file_path,results,initialize =False)
         
         #results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,filecontent)
-        results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent)
+        results = myresults(green_result,yellow_result,grey_list,not_green_list,regexstring_out,mylength,myregexresult,my_alphabet_df,zipped_lists,filecontent,my_color_code,guess,secret,my_color_code_list,my_guess_list)
     
     if my_return_complex == True:
         return(results)
@@ -331,7 +371,7 @@ def vocab_value(np_word_list,inputdf=mydf,printing=False):
     myresults = namedtuple("myresults",["myIV_value_array","sorter","sorted_myIV_value_array","sorted_np_word_list","zipped_lists"])
     results = myresults(myIV_value_array,sorter,sorted_myIV_value_array,sorted_np_word_list,zipped_lists)
     return(results)
-
+'''
 def write_guessing_agent_feedback_file(File_path,my_object,initialize =False):
     if initialize == True:
         f = open(File_path , "wb")
@@ -343,6 +383,37 @@ def write_guessing_agent_feedback_file(File_path,my_object,initialize =False):
         f.close()
     my_data = read_guessing_agent_feedback_file(File_path)
     return(my_data)
+'''
+def write_guessing_agent_feedback_file(File_path,my_results,initialize =False):
+    solved = int(my_results.guess == my_results.secret)
+     
+    my_guess_list = my_results.my_guess_list
+    my_color_code_list = my_results.my_color_code_list
+    guess_color_dict = dict(zip(my_guess_list, my_color_code_list))
+     
+    #row = {"guess":my_results.guess,"secret":my_results.secret,"length_of_results":my_results.mylength,"colorcode":my_results.my_color_code,"guess_list":my_results.my_guess_list,"solved":solved}
+    row = {"guess":my_results.guess,"secret":my_results.secret,"length_of_results":my_results.mylength,"colorcode":my_results.my_color_code,"guess_list":my_results.my_guess_list,"my_color_code_list":my_results.my_color_code_list,"guess_color_dict":guess_color_dict,"solved":solved}
+
+    my_columns = list(row.keys())
+    dfline = pd.DataFrame([row],columns=my_columns)
+    if initialize == True:
+        dfline.to_pickle(File_path)
+        #f = open(File_path , "wb")
+        #pickle.dump(dfline, f)
+        #f.close()
+        print("initial loop write",dfline)
+    else:
+        unpickled_df = pd.read_pickle(File_path)
+        #unpickled_df = unpickled_df.append(row,ignore_index=True)
+        unpickled_df = pd.concat([unpickled_df,dfline], axis=0, ignore_index=True)
+        unpickled_df.to_pickle(File_path)
+        #f = open(File_path , "ab+")
+        #pickle.dump(dfline, f)
+        #f.close()
+        print("append loop write",dfline)
+    #time.sleep(.01)
+    #my_data = read_guessing_agent_feedback_file(File_path)
+    return("thanks")
     
     
 
@@ -397,4 +468,75 @@ def vocab_length(my_word_list = output_word_list,save_to_file = False, my_filena
                 dfline.to_csv(file_name, mode='a',header=False)
             
     return(my_df)
-    
+
+import json
+
+with open('data/decision_trees/slate.tree.total.js') as dataFile:
+    data = dataFile.read()
+    obj = data[data.find('{') : data.rfind('}')+1]
+    jsonObj = json.loads(obj)
+
+my_color_code_list = []
+
+def decision_tree_jsonObj(my_color_code_list):
+    if not "22222" in my_color_code_list:
+        my_color_code_list_length = len(my_color_code_list)
+        print("my_color_code_list",my_color_code_list,"my_color_code_list_length",my_color_code_list_length)
+        if my_color_code_list_length == 1:
+            print("inside 1")
+            color_code1 = my_color_code_list[0]
+            if type(jsonObj["map"][color_code1]) == dict:
+                guess = jsonObj["map"][color_code1]['guess']
+            elif type(jsonObj["map"][color_code1]) == str:
+                guess = jsonObj["map"][color_code1]
+        elif my_color_code_list_length == 2:
+            color_code1 = my_color_code_list[0]
+            color_code2 = my_color_code_list[1]
+            if type(jsonObj["map"][color_code1]["map"][color_code2]) == dict:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]['guess']
+            elif type(jsonObj["map"][color_code1]["map"][color_code2]) == str:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]
+        elif my_color_code_list_length == 3:
+            color_code1 = my_color_code_list[0]
+            color_code2 = my_color_code_list[1]
+            color_code3 = my_color_code_list[2]
+            if type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]) == dict:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]['guess']
+            elif type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]) == str:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]
+        elif my_color_code_list_length == 4:
+            color_code1 = my_color_code_list[0]
+            color_code2 = my_color_code_list[1]
+            color_code3 = my_color_code_list[2]
+            color_code4 = my_color_code_list[3]
+            if type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]) == dict:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]['guess']
+            elif type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]) == str:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]
+        elif my_color_code_list_length == 5:
+            color_code1 = my_color_code_list[0]
+            color_code2 = my_color_code_list[1]
+            color_code3 = my_color_code_list[2]
+            color_code4 = my_color_code_list[3]
+            color_code5 = my_color_code_list[4]
+            if type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]) == dict:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]['guess']
+            elif type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]) == str:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]
+        elif my_color_code_list_length == 6:
+            color_code1 = my_color_code_list[0]
+            color_code2 = my_color_code_list[1]
+            color_code3 = my_color_code_list[2]
+            color_code4 = my_color_code_list[3]
+            color_code5 = my_color_code_list[4]
+            color_code6 = my_color_code_list[5]
+            if type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]["map"][color_code6]) == dict:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]["map"][color_code6]['guess']
+            elif type(jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]["map"][color_code6]) == str:
+                guess = jsonObj["map"][color_code1]["map"][color_code2]["map"][color_code3]["map"][color_code4]["map"][color_code5]["map"][color_code6]
+        else:
+            guess = "not_found"
+        guess = guess.upper()
+    else:
+        guess = "Game_won"
+    return(guess)

@@ -1,5 +1,4 @@
 # Wordle Wiz
----
 This project is for the CMSC671 fall class at UMBC.
 This is comprised of code from the pixegami author found on YouTube and GitHub (see citations below).
 

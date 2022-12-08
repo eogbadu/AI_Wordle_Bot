@@ -10,12 +10,12 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
 
 
 ### To play the game;
-...1. Download the zipped wordle pixiegami folder.
-...2. Unzip the downloaded folder.
-...3. Step into the "wordle pixiegami/python-wordle-main" folder. 
-...4. Launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file.
+1. Download the zipped wordle pixiegami folder.
+2. Unzip the downloaded folder.
+3. Step into the "wordle pixiegami/python-wordle-main" folder. 
+4. Launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file.
 ..* Ensure that the "Rich" python module is installed. Use pip to install. Use `pip install rich`
-...5.
+5.
 there is a markdown line that says: The next line runs the game.
 The game is interactive currently for a human player using the python input feature in the notebook.
 The game is also interactive by an agent through a file implementation where the agent can write guesses to a file.  

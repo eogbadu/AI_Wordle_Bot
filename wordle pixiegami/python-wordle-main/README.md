@@ -1,10 +1,21 @@
 #Wordle Wiz
 ---
 This project is for the CMSC671 fall class at UMBC.
-This is comprised of code from the pixegami author found on YouTube and GitHub (citations below).
+This is comprised of code from the pixegami author found on YouTube and GitHub (see citations below).
 
-# to play the game load download the wordle pixiegami directory into a file system.
-launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file and run the lines of code down to the main loop.
+### Tools Needed
+1. The submitted zipped folder
+2. Tool to run Jupyter notebook file. Google Colab can be used but Jupyter Notebook is highly recommended. [Download Jupyter here.](https://jupyter.org/)
+3. The love of wordle and ability to enjoy impressive coding skills
+
+
+### To play the game;
+...1. Download the zipped wordle pixiegami folder.
+...2. Unzip the downloaded folder.
+...3. Step into the "wordle pixiegami/python-wordle-main" folder. 
+...4. Launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file.
+..* Ensure that the "Rich" python module is installed. Use pip to install. Use `pip install rich`
+...5.
 there is a markdown line that says: The next line runs the game.
 The game is interactive currently for a human player using the python input feature in the notebook.
 The game is also interactive by an agent through a file implementation where the agent can write guesses to a file.  

@@ -25,7 +25,7 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
         ⌘ + A (select all cells)
         Shift + Enter (run all selected)
 
-### What is happening?
+### Overvue
 * The game is interactive currently for a human player using the python input feature in the notebook.
 * The game is also interactive for an agent through a file implementation where the agent can write guesses to a file.  
 * The main loop reads the guesses and provides visual feedback. Visual feedback features containing statistics is shown as well.  
@@ -34,14 +34,14 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
 * There is a data directory where the data files are stored.  
 * These files were code written by this team and includes code from the play_wordle.py file that was written by the original author.
 
-### Highlighted File
-##### Agent_guess_writer.ipynb
+### Highlighted Files
+**Agent_guess_writer.ipynb**
 This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
-    
-##### create_5_letter_word_text.ipynb
+  
+**create_5_letter_word_text.ipynb**
 This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
     
-##### pixigame_modified_play_wordle_with_agent_loop.ipynb 
+**pixigame_modified_play_wordle_with_agent_loop.ipynb** 
 This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
 
 ### The files below are original from the pixegami author

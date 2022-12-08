@@ -35,14 +35,11 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
 * These files were code written by this team and includes code from the play_wordle.py file that was written by the original author.
 
 ### Highlighted Files
-**Agent_guess_writer.ipynb**
-This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
+**Agent_guess_writer.ipynb:** This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
   
-**create_5_letter_word_text.ipynb**
-This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
+**create_5_letter_word_text.ipynb:** This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
     
-**pixigame_modified_play_wordle_with_agent_loop.ipynb** 
-This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
+**pixigame_modified_play_wordle_with_agent_loop.ipynb:** This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
 
 ### The files below are original from the pixegami author
 * **convert_words.py**

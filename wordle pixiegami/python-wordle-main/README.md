@@ -15,13 +15,15 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
 3. Step into the "wordle pixiegami/python-wordle-main" folder. 
 4. Launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file.
 ..* Ensure that the "Rich" python module is installed. Use pip to install. Use `pip install rich`
-5. Run all cells in Jupyter Notebook 
+5. Run all cells in Jupyter Notebook.
+6. 
 
-######On Win/Linux:
+
+###### On Win/Linux:
     Esc (unselect potential cells or edit modes)
     CtrlA (select all cells)
     ShiftEnter (run all selected)
-######On Mac:
+###### On Mac:
     Esc (unselect potential cells or edit modes)
     ⌘A (select all cells)
     ShiftEnter (run all selected)

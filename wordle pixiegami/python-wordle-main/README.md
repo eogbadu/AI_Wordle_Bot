@@ -13,74 +13,53 @@ This is comprised of code from the pixegami author found on YouTube and GitHub (
 1. Download the zipped wordle pixiegami folder.
 2. Unzip the downloaded folder.
 3. Step into the "wordle pixiegami/python-wordle-main" folder. 
-4. Launch the pixigame_modified_play_wordle_with_agent_loop.ipynb jupyter notebook file.
+4. Launch the **pixigame_modified_play_wordle_with_agent_loop.ipynb** jupyter notebook file.
 ..* Ensure that the "Rich" python module is installed. Use pip to install. Use `pip install rich`
 5. Run all cells in Jupyter Notebook.
-6. 
 
+    ###### On Win/Linux:
+        Esc (unselect potential cells or edit modes)
+        Ctrl + A (select all cells)
+        Shift + Enter (run all selected)
+    ###### On Mac:
+        Esc (unselect potential cells or edit modes)
+        ⌘ + A (select all cells)
+        Shift + Enter (run all selected)
 
-###### On Win/Linux:
-    Esc (unselect potential cells or edit modes)
-    CtrlA (select all cells)
-    ShiftEnter (run all selected)
-###### On Mac:
-    Esc (unselect potential cells or edit modes)
-    ⌘A (select all cells)
-    ShiftEnter (run all selected)
+### What is happening?
+* The game is interactive currently for a human player using the python input feature in the notebook.
+* The game is also interactive for an agent through a file implementation where the agent can write guesses to a file.  
+* The main loop reads the guesses and provides visual feedback. Visual feedback features containing statistics is shown as well.  
+* The code has been modified and scripts added to provide an interface for an agent to play the game.
+* This is done by writing guesses to the agent_guesses file. The main loop is run from the "pixigame_modified_play_wordle_with_agent_loop.ipynb" script.  
+* There is a data directory where the data files are stored.  
+* These files were code written by this team and includes code from the play_wordle.py file that was written by the original author.
 
-there is a markdown line that says: The next line runs the game.
-The game is interactive currently for a human player using the python input feature in the notebook.
-The game is also interactive by an agent through a file implementation where the agent can write guesses to a file.  
-The main loop reads the guesses and provides visual feedback.  Data feedback features are under development.  
-
-The code has been modified and scripts added to provide an interface for an agent to play the game.
-This is done by writing guesses to the agent_guesses file.  The main loop is run from the "pixigame_modified_play_wordle_with_agent_loop.ipynb" script.  
-
-## This code is the one you will use to run the program.
-## It imports from the other python programs.
-
-There is a data directory where the data files are stored.  
-These files are code written by this team which includes code from the play_wordle.py file that was written by the original author.
-
-## Agent_guess_writer.ipynb
-    This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
+### Highlighted File
+##### Agent_guess_writer.ipynb
+This script provides an interface for the agent to write guesses into a file.  That file is embedded in the game loop and the master agent pulls these guesses into the game.
     
-## create_5_letter_word_text.ipynb
-    This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
+##### create_5_letter_word_text.ipynb
+This file creates a 5 letter word list from the nltk words data file, extracting the 5 letter words and writing these to a file in the data directory.
     
-## pixigame_modified_play_wordle_with_agent_loop.ipynb 
-    This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
+##### pixigame_modified_play_wordle_with_agent_loop.ipynb 
+This script includes code from the original author that has been included, augmented, and modified to support the game interface as well as providing a game loop where the agent software can connect.  
 
-# These files are original from the pixegami author
+### The files below are original from the pixegami author
+* **convert_words.py**
+* **letter_state.py**
+* **play_wordle.py**
+* **word_source.txt**
+* **wordle.py**
+* **convert_words.py:** This is a script from the original author that creates the word list.
+* **The Data directory**
+* **word_source.txt:** This is the author's word list.
 
-## convert_words.py
+### These files were written as part of this project
+* **agent_guesses.txt:** This is a file that provides the agent input to the game.
+* **wordle_words.txt:** This is a file of the words used in this script.
 
-## letter_state.py
-
-## play_wordle.py
-    This file has been modified to provide some specific alterations required in our agent implementation
-
-## README.md
-
-## word_source.txt
-
-## wordle.py
-
-
-# Data directory
-
-## convert_words.py  
-This is a script from the original author that creates the word list
-## word_source.txt  
-This is the author's word list
-
-# These files are written as part of this project
-## agent_guesses.txt  
-This is a file that provides the agent input to the game.   
-## wordle_words.txt
-This is a file of the words used in this script
-
-# Citations
+### Citations
 This work was significantly informed by code from this YouTube site and corresponding GitHub repository.  
 
 Created on Sat Nov 5 13:25:36 2022
